@@ -1,0 +1,32 @@
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Invoice {
+  // id               Int           @id @default(autoincrement())
+  id               String        @id @default(cuid()) @db.VarChar(30)
+  invoice_number   String
+  customer_name    String
+  salesperson_name String
+  invoice_notes    String?
+  total_amount     Float
+  invoice_date     DateTime
+  products_sold    SoldProduct[]
+}
+
+model SoldProduct {
+  id       Int       @id @default(autoincrement())
+  name     String
+  picture  String
+  stock    Int
+  price    Float
+  quantity Int
+  // invoice_number String    @unique
+  invoices Invoice[]
+}
